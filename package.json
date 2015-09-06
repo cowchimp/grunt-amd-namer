@@ -1,6 +1,6 @@
 {
   "name": "grunt-amd-namer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Name anonymous AMD modules using AST parsing",
   "repository": "cowchimp/grunt-amd-namer",
   "author": {

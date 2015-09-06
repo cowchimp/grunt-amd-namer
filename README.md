@@ -47,7 +47,9 @@ grunt.loadNpmTasks('grunt-amd-namer');
 ```js
 grunt.initConfig({
   amd_namer: {
-    options: {},
+    options: {
+      baseUrl: 'dist/javascript'    
+    },
     files: [
       {
         expand: true,
@@ -62,6 +64,9 @@ grunt.initConfig({
 
 ## Contributing
 Feel free to open issues and send pull-requests.
+
+## Release History
+ * 2015-09-07   v1.0.0   Must pass `baseUrl` option
 
 ## License
 Copyright (c) 2015 cowchimp. Licensed under the MIT license.

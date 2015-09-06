@@ -21,21 +21,26 @@ module.exports = function (grunt) {
   grunt.registerMultiTask('amd_namer', 'Name anonymous AMD modules using AST parsing', function () {
     var opts = this.options();
 
+    if(typeof opts.baseUrl != 'string' || opts.baseUrl.length < 1) {
+      grunt.fail.warn("Must pass 'baseUrl' option");
+      return;
+    }
+
     this.files.forEach(function (file) {
       var srcContents = grunt.file.read(file.src);
-      var distContents = addNameToModule(srcContents, file);
+      var distContents = addNameToModule(srcContents, file, opts);
       grunt.file.write(file.dest, distContents, opts);
     });
   });
 
 };
 
-function addNameToModule(contents, file) {
+function addNameToModule(contents, file, opts) {
   var loc = getDefineLoc(contents);
   if(!loc) {
     return contents;
   }
-  var name = getModuleName(file);
+  var name = getModuleName(file, opts);
 
   var lines = contents.split('\n');
   lines[loc.line] = addNameToLine(lines[loc.line], loc.column, name);
@@ -70,9 +75,9 @@ function isAnonymousDefineCallNode(node) {
   return firstArg && firstArg.type != 'Literal';
 }
 
-function getModuleName(file) {
+function getModuleName(file, opts) {
   var filename = file.dest;
-  var prefix = file.orig.dest + (file.orig.dest.lastIndexOf('/') == file.orig.dest.length ? '' : '/');
+  var prefix = opts.baseUrl + (opts.baseUrl.lastIndexOf('/') == opts.baseUrl.length-1 ? '' : '/');
   filename = stripPrefix(filename, prefix);
   filename = stripSuffix(filename, path.extname(filename));
   return filename;

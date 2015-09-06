@@ -34,7 +34,9 @@ module.exports = function (grunt) {
     // Configuration to be run (and then tested).
     amd_namer: {
       all: {
-        options: {},
+        options: {
+          baseUrl: 'tmp'
+        },
         files: [
           {
             expand: true,
